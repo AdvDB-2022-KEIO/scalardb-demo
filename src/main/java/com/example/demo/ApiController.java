@@ -1,6 +1,7 @@
 package com.example.demo;
 
 
+import com.example.demo.model.Booking;
 import com.example.demo.model.Room;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,14 @@ public class ApiController {
     public ResponseResult addRoom(@RequestBody Room room) {
         apiService.addRoom(room);
         return getResult(room);
+    }
+
+    @PostMapping("/booking")
+    @ResponseBody
+    public ResponseResult bookRoom(@RequestBody Booking bookingReq) {
+        Booking bookingRes = apiService.booking(bookingReq);
+        System.out.println(bookingReq.toString());
+        return getResult(bookingRes);
     }
 
     @GetMapping("/room/{id}")

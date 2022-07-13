@@ -1,0 +1,19 @@
+【booking相关】
+GET booking http://localhost:8080/booking/1
+
+POST booking  http://localhost:8080/booking
+{
+    "booking_id":4,
+    "hotel_id":2,
+    "room_id":6,
+    "guest_id":5,
+    "date_from":"2022-10-01",
+    "date_to":"2022-10-07"
+}
+
+【Hotel scan】
+GET  http://localhost:8080/hotel
+
+
+【Room scan】
+GET  http://localhost:8080/room

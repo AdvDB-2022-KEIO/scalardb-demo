@@ -10,6 +10,7 @@ import com.scalar.db.exception.transaction.CrudException;
 import com.scalar.db.io.Key;
 import org.springframework.stereotype.Repository;
 
+import java.awt.print.Book;
 import java.util.Optional;
 
 @Repository
@@ -94,6 +95,48 @@ public class ApiRepository {
             System.out.println("getBooking:"+booking.toString());
             return bookingResult;
 
+        } catch (CrudConflictException e) {
+            throw new RepositoryConflictException(e.getMessage(), e);
+        } catch (CrudException e) {
+            throw new RepositoryCrudException("Reading User failed", e);
+        }
+    }
+
+    public Booking booking(DistributedTransaction tx, Booking bookingReq){
+        try {
+//            写booking表
+            Key pk = new Key("booking_id", bookingReq.getBooking_id());
+            Put put = new Put(pk)
+                    .forNamespace("booking")
+                    .forTable("booking")
+                    .withValue("guest_id",bookingReq.getGuest_id())
+                    .withValue("date_from",bookingReq.getDate_from())
+                    .withValue("date_to",bookingReq.getDate_to())
+                    .withValue("room_id",bookingReq.getRoom_id())
+                    .withValue("booking_status",bookingReq.getBooking_status())
+                    .withValue("hotel_id",bookingReq.getHotel_id());
+            tx.put(put);
+//            查room表是否可用
+            Optional<Result> room = tx.get(new Get(new Key("room_id", bookingReq.getRoom_id()))
+                    .forNamespace("hotel")
+                    .forTable("room"));
+//            room.get().getValue("room_id").get().getAsString().get();
+//            int room_id = room.get().getValue("room_id").get().getAsInt();
+            int room_status = room.get().getValue("room_status").get().getAsInt();
+//            int room_number = room.get().getValue("room_number").get().getAsInt();
+//            int hotel_id = room.get().getValue("hotel_id").get().getAsInt();
+            if(room_status==0){
+                //            如果不可用直接抛出异常
+                throw  new CrudException("can not booking this room");
+            }
+//            如果可用就改room表
+            tx.put(new Put(
+                    new Key("room_id", bookingReq.getRoom_id()))
+                    .forNamespace("hotel")
+                    .forTable("room")
+                    .withValue("room_status",0));
+            bookingReq.setBooking_status(1);
+            return bookingReq;
         } catch (CrudConflictException e) {
             throw new RepositoryConflictException(e.getMessage(), e);
         } catch (CrudException e) {

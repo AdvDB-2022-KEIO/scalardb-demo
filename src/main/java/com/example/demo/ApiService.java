@@ -108,4 +108,33 @@ public class ApiService {
         }
         return null;
     }
+
+    public Booking booking(Booking bookingReq) {
+        try {
+            tx = manager.start();
+        } catch (TransactionException e) {
+            try {
+                tx.abort();
+            } catch (AbortException ex) {
+            }
+            throw new ServiceException("An error occurred when adding a group", e);
+        }
+        try {
+            Booking bookingRes = apiRepository.booking(tx, bookingReq);
+            tx.commit();
+            return bookingRes;
+        } catch (CommitConflictException | RepositoryConflictException e) {
+            try {
+                tx.abort();
+            } catch (AbortException ex) {
+            }
+        } catch (CommitException | RepositoryCrudException | UnknownTransactionStatusException e) {
+            try {
+                tx.abort();
+            } catch (AbortException ex) {
+            }
+            throw new ServiceException("An error occurred when adding a user", (Throwable) e);
+        }
+        return null;
+    }
 }
