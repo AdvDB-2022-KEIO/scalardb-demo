@@ -53,7 +53,7 @@ public class ResponseResult extends HashMap<String, Object> {
 
     /* 返回成功消息 */
     public static ResponseResult success() {
-        return success("操作成功");
+        return success("Success");
     }
 
     public static ResponseResult success(String msg) {
@@ -61,7 +61,7 @@ public class ResponseResult extends HashMap<String, Object> {
     }
 
     public static ResponseResult success(Object data) {
-        return success("操作成功", data);
+        return success("Success", data);
     }
 
     /**
@@ -78,7 +78,7 @@ public class ResponseResult extends HashMap<String, Object> {
 
     /* 返回错误消息 */
     public static ResponseResult error() {
-        return error("操作失败");
+        return error("Failed");
     }
 
     public static ResponseResult error(String msg) {

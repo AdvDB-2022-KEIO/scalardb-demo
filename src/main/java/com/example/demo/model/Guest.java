@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,4 +16,7 @@ public class Guest {
 //    其实是电话号码
     String guest_number;
     String guest_mail_address;
+
+    @JsonIgnore
+    String common_key;
 }
