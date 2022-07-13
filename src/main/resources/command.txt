@@ -1,0 +1,2 @@
+
+//java -jar scalardb-schema-loader-3.5.3.jar --config database.properties -f schema.json --coordinator

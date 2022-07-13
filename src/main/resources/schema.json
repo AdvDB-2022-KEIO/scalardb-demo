@@ -42,6 +42,7 @@
       "count": "INT"
     }
   },
+
   "order.items": {
     "transaction": true,
     "partition-key": [
@@ -52,7 +53,59 @@
       "name": "TEXT",
       "price": "INT"
     }
+  },
+
+  "booking.booking": {
+    "transaction": true,
+    "partition-key": [
+      "booking_id"
+    ],
+    "columns": {
+      "booking_id": "INT",
+      "guest_id": "INT",
+      "hotel_id": "INT",
+      "date_from": "TEXT",
+      "date_to": "TEXT",
+      "booking_status": "INT"
+    }
+  },
+
+  "guest.guest": {
+    "transaction": true,
+    "partition-key": [
+      "guest_id"
+    ],
+    "columns": {
+      "guest_id": "INT",
+      "guest_name": "TEXT",
+      "guest_number": "TEXT",
+      "guest_mail_address": "TEXT"
+    }
+  },
+
+  "hotel.hotel": {
+    "transaction": true,
+    "partition-key": [
+      "hotel_id"
+    ],
+    "columns": {
+      "hotel_id": "INT",
+      "hotel_name": "TEXT"
+    }
+  },
+
+  "hotel.room": {
+    "transaction": true,
+    "partition-key": [
+      "room_id"
+    ],
+    "columns": {
+      "room_id": "INT",
+      "hotel_id": "INT",
+      "room_number": "INT",
+      "room_status": "INT"
+    }
   }
+
 }
 
-//java -jar scalardb-schema-loader-3.5.3.jar --config database.properties -f schema.json --coordinator

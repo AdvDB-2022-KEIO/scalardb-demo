@@ -3,6 +3,7 @@ package com.example.demo;
 import com.scalar.db.api.DistributedTransactionManager;
 import com.scalar.db.config.DatabaseConfig;
 import com.scalar.db.service.TransactionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +15,9 @@ import java.net.URL;
 @SpringBootApplication
 public class DemoApplication {
 
+//	@Autowired
+//	private DistributedTransactionManager manager;
+
 	@Bean
 	@Scope("singleton")
 	DistributedTransactionManager createScalarDBTransactionManager() throws IOException {
@@ -24,11 +28,7 @@ public class DemoApplication {
 		return factory.getTransactionManager();
 	}
 
-
 	public static void main(String[] args) {
-
-
 		SpringApplication.run(DemoApplication.class, args);
 	}
-
 }
