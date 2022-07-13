@@ -49,4 +49,33 @@ public class ApiService {
             throw new ServiceException("An error occurred when adding a user", (Throwable) e);
         }
     }
+
+    public Room getRoom(Integer id) {
+        try {
+            tx = manager.start();
+        } catch (TransactionException e) {
+            try {
+                tx.abort();
+            } catch (AbortException ex) {
+            }
+            throw new ServiceException("An error occurred when adding a group", e);
+        }
+        try {
+            Room room = apiRepository.getRoom(tx, id);
+            tx.commit();
+            return room;
+        } catch (CommitConflictException | RepositoryConflictException e) {
+            try {
+                tx.abort();
+            } catch (AbortException ex) {
+            }
+        } catch (CommitException | RepositoryCrudException | UnknownTransactionStatusException e) {
+            try {
+                tx.abort();
+            } catch (AbortException ex) {
+            }
+            throw new ServiceException("An error occurred when adding a user", (Throwable) e);
+        }
+        return null;
+    }
 }
