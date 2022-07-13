@@ -16,5 +16,6 @@ public class Booking {
     int room_id;
     String date_from;
     String date_to;
+//    1属于正常预定，0属于这一段记录已经过期，是之前的预定
     int booking_status;
 }

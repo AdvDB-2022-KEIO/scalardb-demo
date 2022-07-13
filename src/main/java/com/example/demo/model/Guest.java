@@ -12,6 +12,7 @@ import lombok.ToString;
 public class Guest {
     int guest_id;
     String guest_name;
+//    其实是电话号码
     String guest_number;
     String guest_mail_address;
 }
