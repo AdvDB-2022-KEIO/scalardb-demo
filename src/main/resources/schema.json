@@ -64,6 +64,7 @@
       "booking_id": "INT",
       "guest_id": "INT",
       "hotel_id": "INT",
+      "room_id": "INT",
       "date_from": "TEXT",
       "date_to": "TEXT",
       "booking_status": "INT"

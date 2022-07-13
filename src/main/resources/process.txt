@@ -1,0 +1,37 @@
+初始化booking、hotel、room、guest数据库和表
+booking存储在cassandra
+hotel、room、guest存储在mysql
+关键操作【guest 预定 某一个hotel的room】
+1、发起预定请求【某一个guest 想要 预定 某一个hotel的某一个room】
+2、transaction.start()
+3、向booking表写入预定记录
+3、查询room是否处于可预定状态
+    3.1 可以。
+        修改room表的状态，变为已经被预定
+        transaction.commit()
+    3.2 不可以
+        抛出异常
+        TransactionManager会自动回滚之前的booking写入记录
+4. 返回预定结果
+
+整个流程设计mysql和cassandra多数据库实例
+
+---
+
+Initialize booking, hotel, room, guest database and tables
+booking is stored in cassandra
+hotel, room, guest are stored in mysql
+Key operations [guest book a room in a hotel]
+1, initiate a reservation request [a guest wants to book a room in a hotel]
+2、transaction.start()
+3、write reservation record to booking table
+3、Query whether the room is available for booking
+    3.1 Yes.
+        Modify the status of the room table to be booked
+        transaction.commit()
+    3.2 No
+        Throw an exception
+        TransactionManager will automatically roll back the previous booking write record.
+4. return the scheduled result
+
+The whole process design mysql and cassandra multi-database instances

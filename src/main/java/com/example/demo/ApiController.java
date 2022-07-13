@@ -26,6 +26,12 @@ public class ApiController {
         return getResult(apiService.getRoom(id));
     }
 
+    @GetMapping("/booking/{id}")
+    @ResponseBody
+    public ResponseResult getBooking(@PathVariable Integer id) {
+        return getResult(apiService.getBooking(id));
+    }
+
     /**
      * 对象类型响应消息
      * @param data

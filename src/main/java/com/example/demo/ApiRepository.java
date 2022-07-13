@@ -2,6 +2,7 @@ package com.example.demo;
 
 import com.example.demo.exception.RepositoryConflictException;
 import com.example.demo.exception.RepositoryCrudException;
+import com.example.demo.model.Booking;
 import com.example.demo.model.Room;
 import com.scalar.db.api.*;
 import com.scalar.db.exception.transaction.CrudConflictException;
@@ -70,6 +71,33 @@ public class ApiRepository {
         } catch (CrudException e) {
             throw new RepositoryCrudException("Reading User failed", e);
         }
-        return null;
+    }
+
+    public Booking getBooking(DistributedTransaction tx, Integer id) {
+        try {
+            Key pk = new Key("booking_id", id);
+            Get get = new Get(pk)
+                    .forNamespace("booking")
+                    .forTable("booking");
+            tx.get(get);
+            Optional<Result> booking = tx.get(get);
+//            booking.get().getValue("room_id").get().getAsString().get();
+            int booking_id = booking.get().getValue("booking_id").get().getAsInt();
+            int hotel_id = booking.get().getValue("hotel_id").get().getAsInt();
+            int guest_id = booking.get().getValue("guest_id").get().getAsInt();
+            int room_id = booking.get().getValue("room_id").get().getAsInt();
+//            int room_id = 1;
+            String date_from = booking.get().getValue("date_from").get().getAsString().get();
+            String date_to = booking.get().getValue("date_to").get().getAsString().get();
+            int booking_stattus = booking.get().getValue("booking_status").get().getAsInt();
+            Booking bookingResult = new Booking(booking_id,hotel_id,guest_id,room_id,date_from,date_to,booking_stattus);
+            System.out.println("getBooking:"+booking.toString());
+            return bookingResult;
+
+        } catch (CrudConflictException e) {
+            throw new RepositoryConflictException(e.getMessage(), e);
+        } catch (CrudException e) {
+            throw new RepositoryCrudException("Reading User failed", e);
+        }
     }
 }

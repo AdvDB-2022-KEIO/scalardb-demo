@@ -13,6 +13,7 @@ public class Booking {
     int booking_id;
     int hotel_id;
     int guest_id;
+    int room_id;
     String date_from;
     String date_to;
     int booking_status;

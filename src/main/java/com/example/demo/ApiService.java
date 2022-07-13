@@ -3,6 +3,7 @@ package com.example.demo;
 import com.example.demo.exception.RepositoryConflictException;
 import com.example.demo.exception.RepositoryCrudException;
 import com.example.demo.exception.ServiceException;
+import com.example.demo.model.Booking;
 import com.example.demo.model.Room;
 import com.scalar.db.api.DistributedTransaction;
 import com.scalar.db.api.DistributedTransactionManager;
@@ -64,6 +65,35 @@ public class ApiService {
             Room room = apiRepository.getRoom(tx, id);
             tx.commit();
             return room;
+        } catch (CommitConflictException | RepositoryConflictException e) {
+            try {
+                tx.abort();
+            } catch (AbortException ex) {
+            }
+        } catch (CommitException | RepositoryCrudException | UnknownTransactionStatusException e) {
+            try {
+                tx.abort();
+            } catch (AbortException ex) {
+            }
+            throw new ServiceException("An error occurred when adding a user", (Throwable) e);
+        }
+        return null;
+    }
+
+    public Booking getBooking(Integer id) {
+        try {
+            tx = manager.start();
+        } catch (TransactionException e) {
+            try {
+                tx.abort();
+            } catch (AbortException ex) {
+            }
+            throw new ServiceException("An error occurred when adding a group", e);
+        }
+        try {
+            Booking booking = apiRepository.getBooking(tx, id);
+            tx.commit();
+            return booking;
         } catch (CommitConflictException | RepositoryConflictException e) {
             try {
                 tx.abort();
