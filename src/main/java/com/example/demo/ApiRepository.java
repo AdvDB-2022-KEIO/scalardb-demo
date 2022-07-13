@@ -8,8 +8,11 @@ import com.scalar.db.api.*;
 import com.scalar.db.exception.transaction.CrudConflictException;
 import com.scalar.db.exception.transaction.CrudException;
 import com.scalar.db.io.Key;
+import com.scalar.db.io.TextValue;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.print.Book;
 import java.util.Optional;
 
@@ -67,6 +70,41 @@ public class ApiRepository {
             roomResult.setHotel_id(hotel_id);
             return roomResult;
             
+        } catch (CrudConflictException e) {
+            throw new RepositoryConflictException(e.getMessage(), e);
+        } catch (CrudException e) {
+            throw new RepositoryCrudException("Reading User failed", e);
+        }
+    }
+
+    public List<Room> getRoomList(DistributedTransaction tx) {
+        try {
+//            Key pk = new Key("room_id", id);
+//            Get get = new Get(pk)
+//                    .forNamespace("hotel")
+//                    .forTable("room");
+//            tx.get(get);
+
+            Scan scan = new Scan(new Key(new TextValue("common_key", "common_key")))
+                    .forNamespace("hotel")
+                    .forTable("room");
+
+            List<Result> result = tx.scan(scan);
+//            room.get().getValue("room_id").get().getAsString().get();
+
+            List<Room> roomList = new ArrayList<Room>();
+
+            for (Result value : result) {
+                Room room = new Room();
+                room.setRoom_id(value.getValue("room_id").get().getAsInt());
+                room.setRoom_status(value.getValue("room_status").get().getAsInt());
+                room.setRoom_number(value.getValue("room_number").get().getAsInt());
+                room.setHotel_id(value.getValue("hotel_id").get().getAsInt());
+                roomList.add(room);
+            }
+
+            return roomList;
+
         } catch (CrudConflictException e) {
             throw new RepositoryConflictException(e.getMessage(), e);
         } catch (CrudException e) {

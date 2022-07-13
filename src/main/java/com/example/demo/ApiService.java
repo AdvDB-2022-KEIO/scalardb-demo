@@ -11,6 +11,7 @@ import com.scalar.db.exception.transaction.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -79,6 +80,36 @@ public class ApiService {
         }
         return null;
     }
+
+    public List<Room> getRoomList() {
+        try {
+            tx = manager.start();
+        } catch (TransactionException e) {
+            try {
+                tx.abort();
+            } catch (AbortException ex) {
+            }
+            throw new ServiceException("An error occurred when adding a group", e);
+        }
+        try {
+            List<Room> roomList = apiRepository.getRoomList(tx);
+            tx.commit();
+            return roomList;
+        } catch (CommitConflictException | RepositoryConflictException e) {
+            try {
+                tx.abort();
+            } catch (AbortException ex) {
+            }
+        } catch (CommitException | RepositoryCrudException | UnknownTransactionStatusException e) {
+            try {
+                tx.abort();
+            } catch (AbortException ex) {
+            }
+            throw new ServiceException("An error occurred when adding a user", (Throwable) e);
+        }
+        return null;
+    }
+
 
     public Booking getBooking(Integer id) {
         try {

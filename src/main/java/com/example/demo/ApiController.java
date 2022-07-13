@@ -35,6 +35,12 @@ public class ApiController {
         return getResult(apiService.getRoom(id));
     }
 
+    @GetMapping("/room/")
+    @ResponseBody
+    public ResponseResult getRoomList() {
+        return getResult(apiService.getRoomList());
+    }
+
     @GetMapping("/booking/{id}")
     @ResponseBody
     public ResponseResult getBooking(@PathVariable Integer id) {
