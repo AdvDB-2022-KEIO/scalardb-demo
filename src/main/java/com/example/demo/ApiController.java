@@ -56,6 +56,13 @@ public class ApiController {
         return getResult(apiService.getBooking(id));
     }
 
+    @GetMapping("/booking")
+    @ResponseBody
+    public ResponseResult getBookingList() {
+        return getResult(apiService.getBookingList());
+    }
+
+
     /**
      * 对象类型响应消息
      * @param data
