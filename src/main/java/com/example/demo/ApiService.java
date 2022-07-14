@@ -165,6 +165,16 @@ public class ApiService {
             } catch (AbortException ex) {
             }
             throw new ServiceException("An error occurred when adding a user", (Throwable) e);
+        } catch (AbortException e) {
+            try {
+                System.out.println(" ####### abort");
+                tx.abort();
+                return null;
+            } catch (AbortException ex) {
+                throw new RuntimeException(ex);
+            }
+        } catch (CrudException e) {
+            throw new RuntimeException(e);
         }
         return null;
     }

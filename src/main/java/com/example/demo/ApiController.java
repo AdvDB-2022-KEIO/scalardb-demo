@@ -26,6 +26,9 @@ public class ApiController {
     public ResponseResult bookRoom(@RequestBody Booking bookingReq) {
         Booking bookingRes = apiService.booking(bookingReq);
         System.out.println(bookingReq.toString());
+        if(bookingRes==null){
+            return new ResponseResult(HttpStatus.SUCCESS,"booking failed");
+        }
         return getResult(bookingRes);
     }
 

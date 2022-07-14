@@ -5,13 +5,17 @@ import com.example.demo.exception.RepositoryCrudException;
 import com.example.demo.model.Booking;
 import com.example.demo.model.Room;
 import com.scalar.db.api.*;
+import com.scalar.db.exception.transaction.AbortException;
 import com.scalar.db.exception.transaction.CrudConflictException;
 import com.scalar.db.exception.transaction.CrudException;
 import com.scalar.db.io.Key;
 import com.scalar.db.io.TextValue;
 import org.springframework.stereotype.Repository;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.awt.print.Book;
 import java.util.Optional;
@@ -140,8 +144,7 @@ public class ApiRepository {
         }
     }
 
-    public Booking booking(DistributedTransaction tx, Booking bookingReq){
-        try {
+    public Booking booking(DistributedTransaction tx, Booking bookingReq) throws AbortException, CrudException {
 //            写booking表
             Key pk = new Key("booking_id", bookingReq.getBooking_id());
             Put put = new Put(pk)
@@ -165,8 +168,21 @@ public class ApiRepository {
 //            int hotel_id = room.get().getValue("hotel_id").get().getAsInt();
             if(room_status==0){
                 //            如果不可用直接抛出异常
-                throw  new CrudException("can not booking this room");
+                System.out.println("###########"+room_status);
+                tx.abort();
+                throw  new AbortException("can not booking this room");
             }
+//            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+//            Date dateFrom = null;
+//            Date dateTo = null;
+//            try {
+//                dateFrom = format.parse(bookingReq.getDate_from());
+//                dateTo = format.parse(bookingReq.getDate_to());
+//        System.out.println(dateFrom+" +dateTo);
+////                dateFrom.compareTo()
+//            } catch (ParseException e) {
+//                throw new AbortException("can not booking this room");
+//            }
 //            如果可用就改room表
             tx.put(new Put(
                     new Key("room_id", bookingReq.getRoom_id()))
@@ -175,10 +191,5 @@ public class ApiRepository {
                     .withValue("room_status",0));
             bookingReq.setBooking_status(1);
             return bookingReq;
-        } catch (CrudConflictException e) {
-            throw new RepositoryConflictException(e.getMessage(), e);
-        } catch (CrudException e) {
-            throw new RepositoryCrudException("Reading User failed", e);
-        }
     }
 }
