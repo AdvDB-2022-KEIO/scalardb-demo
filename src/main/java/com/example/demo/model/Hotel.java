@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,4 +13,7 @@ import lombok.ToString;
 public class Hotel {
     int hotel_id;
     String hotel_name;
+
+    @JsonIgnore
+    String common_key;
 }

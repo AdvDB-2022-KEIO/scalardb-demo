@@ -3,11 +3,13 @@ package com.example.demo;
 import com.example.demo.exception.RepositoryConflictException;
 import com.example.demo.exception.RepositoryCrudException;
 import com.example.demo.model.Booking;
+import com.example.demo.model.Hotel;
 import com.example.demo.model.Room;
 import com.scalar.db.api.*;
 import com.scalar.db.exception.transaction.AbortException;
 import com.scalar.db.exception.transaction.CrudConflictException;
 import com.scalar.db.exception.transaction.CrudException;
+import com.scalar.db.io.IntValue;
 import com.scalar.db.io.Key;
 import com.scalar.db.io.TextValue;
 import org.springframework.stereotype.Repository;
@@ -83,18 +85,12 @@ public class ApiRepository {
 
     public List<Room> getRoomList(DistributedTransaction tx) {
         try {
-//            Key pk = new Key("room_id", id);
-//            Get get = new Get(pk)
-//                    .forNamespace("hotel")
-//                    .forTable("room");
-//            tx.get(get);
 
             Scan scan = new Scan(new Key(new TextValue("common_key", "common_key")))
                     .forNamespace("hotel")
                     .forTable("room");
 
             List<Result> result = tx.scan(scan);
-//            room.get().getValue("room_id").get().getAsString().get();
 
             List<Room> roomList = new ArrayList<Room>();
 
@@ -116,6 +112,36 @@ public class ApiRepository {
         }
     }
 
+    public List<Hotel> getHotelList(DistributedTransaction tx){
+        try {
+
+            Scan scan = new Scan(new Key(new TextValue("common_key", "common_key")))
+                    .forNamespace("hotel")
+                    .forTable("hotel");
+
+            List<Result> result = tx.scan(scan);
+
+            List<Hotel> hotelList = new ArrayList<>();
+
+            for (Result value : result) {
+                Hotel hotel = new Hotel();
+                hotel.setHotel_id(value.getValue("hotel_id").get().getAsInt());
+                hotel.setHotel_name(value.getValue("hotel_name").get().getAsString().get());
+                hotelList.add(hotel);
+            }
+
+            return hotelList;
+
+        } catch (CrudConflictException e) {
+            throw new RepositoryConflictException(e.getMessage(), e);
+        } catch (CrudException e) {
+            throw new RepositoryCrudException("Reading User failed", e);
+        }
+    }
+
+
+
+
     public Booking getBooking(DistributedTransaction tx, Integer id) {
         try {
             Key pk = new Key("booking_id", id);
@@ -133,7 +159,7 @@ public class ApiRepository {
             String date_from = booking.get().getValue("date_from").get().getAsString().get();
             String date_to = booking.get().getValue("date_to").get().getAsString().get();
             int booking_stattus = booking.get().getValue("booking_status").get().getAsInt();
-            Booking bookingResult = new Booking(booking_id,hotel_id,guest_id,room_id,date_from,date_to,booking_stattus);
+            Booking bookingResult = new Booking(booking_id,hotel_id,guest_id,room_id,date_from,date_to,booking_stattus,"common_key;");
             System.out.println("getBooking:"+booking.toString());
             return bookingResult;
 

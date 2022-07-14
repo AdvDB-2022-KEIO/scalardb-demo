@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,4 +18,7 @@ public class Room {
 //    1可预订，0被定出
     int room_status;
     int hotel_id;
+
+    @JsonIgnore
+    String common_key;
 }

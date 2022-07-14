@@ -1,64 +1,11 @@
 {
-  "customer.customers": {
-    "transaction": true,
-    "partition-key": [
-      "customer_id"
-    ],
-    "columns": {
-      "customer_id": "INT",
-      "name": "TEXT",
-      "credit_limit": "INT",
-      "credit_total": "INT"
-    }
-  },
-  "order.orders": {
-    "transaction": true,
-    "partition-key": [
-      "customer_id"
-    ],
-    "clustering-key": [
-      "timestamp"
-    ],
-    "secondary-index": [
-      "order_id"
-    ],
-    "columns": {
-      "order_id": "TEXT",
-      "customer_id": "INT",
-      "timestamp": "BIGINT"
-    }
-  },
-  "order.statements": {
-    "transaction": true,
-    "partition-key": [
-      "order_id"
-    ],
-    "clustering-key": [
-      "item_id"
-    ],
-    "columns": {
-      "order_id": "TEXT",
-      "item_id": "INT",
-      "count": "INT"
-    }
-  },
-
-  "order.items": {
-    "transaction": true,
-    "partition-key": [
-      "item_id"
-    ],
-    "columns": {
-      "item_id": "INT",
-      "name": "TEXT",
-      "price": "INT"
-    }
-  },
-
   "booking.booking": {
     "transaction": true,
     "partition-key": [
       "booking_id"
+    ],
+    "secondary-index": [
+      "common_key"
     ],
     "columns": {
       "booking_id": "INT",
@@ -67,7 +14,8 @@
       "room_id": "INT",
       "date_from": "TEXT",
       "date_to": "TEXT",
-      "booking_status": "INT"
+      "booking_status": "INT",
+      "common_key": "TEXT"
     }
   },
 
@@ -76,11 +24,15 @@
     "partition-key": [
       "guest_id"
     ],
+    "secondary-index": [
+      "common_key"
+    ],
     "columns": {
       "guest_id": "INT",
       "guest_name": "TEXT",
       "guest_number": "TEXT",
-      "guest_mail_address": "TEXT"
+      "guest_mail_address": "TEXT",
+      "common_key": "TEXT"
     }
   },
 
@@ -89,9 +41,13 @@
     "partition-key": [
       "hotel_id"
     ],
+    "secondary-index": [
+      "common_key"
+    ],
     "columns": {
       "hotel_id": "INT",
-      "hotel_name": "TEXT"
+      "hotel_name": "TEXT",
+      "common_key": "TEXT"
     }
   },
 
@@ -100,13 +56,15 @@
     "partition-key": [
       "room_id"
     ],
+    "secondary-index": [
+      "common_key"
+    ],
     "columns": {
       "room_id": "INT",
       "hotel_id": "INT",
       "room_number": "INT",
-      "room_status": "INT"
+      "room_status": "INT",
+      "common_key": "TEXT"
     }
   }
-
 }
-
