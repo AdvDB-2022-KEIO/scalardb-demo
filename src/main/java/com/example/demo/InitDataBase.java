@@ -37,14 +37,14 @@ public class InitDataBase {
 
         insertRoom( new Room(1,101,1,1,"common_key")) ;
         insertRoom( new Room(2,102,1,1,"common_key"));//1可预订
-        insertRoom( new Room(3,201,0,1,"common_key")); //0为被定出
+        insertRoom( new Room(3,201,0,1,"common_key")); //0房间故障不可预订
         insertRoom( new Room(4,202,1,1,"common_key"));
 
         insertRoom( new Room(5,101,1,2,"common_key"));
         insertRoom( new Room(6,102,1,2,"common_key"));
         insertRoom( new Room(7,201,1,2,"common_key"));
         insertRoom( new Room(8,202,1,2,"common_key"));
-        insertRoom( new Room(9,301,0,2,"common_key"));//0为被定出
+        insertRoom( new Room(9,301,0,2,"common_key"));//是否可预订根据roomstatus和时间段判断
 
 
         insertHotel(new Hotel(1,"yagami hotel","common_key"));
@@ -105,7 +105,7 @@ public class InitDataBase {
                         .withValue("date_from",booking.getDate_from())
                         .withValue("date_to",booking.getDate_to())
                         .withValue("booking_status",booking.getBooking_status())
-                        .withValue ( "common_key" , booking.getCommon_key() );
+                        .withValue ( "common_key" , booking.getCommon_key());
                 System.out.println("insertBooking:"+booking.toString());
                 tx.put(put);
             }
