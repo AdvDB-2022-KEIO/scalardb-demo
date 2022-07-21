@@ -32,7 +32,8 @@ public class ApiRepository {
                     .forTable("room")
                     .withValue("room_status",room.getRoom_status())
                     .withValue("room_number",room.getRoom_number())
-                    .withValue("hotel_id",room.getHotel_id());
+                    .withValue("hotel_id",room.getHotel_id())
+                    .withValue("common_key","common_key");
             tx.put(put);
         } catch (CrudConflictException e) {
             throw new RepositoryConflictException(e.getMessage(), e);
@@ -230,7 +231,7 @@ public class ApiRepository {
             System.out.println("###########" + room_status);
             tx.abort();
             throw new AbortException("can not booking this room");
-        }
+        }   
 
         //写booking表
         Key pk = new Key("booking_id", id+1);
