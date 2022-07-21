@@ -77,7 +77,7 @@ mvn spring-boot:run
 * HTTP method: **POST**
 * Request URL of API: `localhost:8080/room/`
 
-Data format:<br>
+<br>Data Format:<br>
 Data should be **Raw Data** in **JSON** format.
 ```
 # Example
@@ -95,7 +95,7 @@ Data should be **Raw Data** in **JSON** format.
 * HTTP method: **GET**
 * Request URL of API: `localhost:8080/room/{id}`
 
-Data Format:<br>
+<br>Data Format:<br>
 Replace the `{id}` with the Room ID which is going to be retrieved.
 
 <li>Search for the list of all the Room information:</li><br>
@@ -104,7 +104,7 @@ Replace the `{id}` with the Room ID which is going to be retrieved.
 * HTTP method: **GET**
 * Request URL of API: `localhost:8080/room/`
 
-Data Format:<br>
+<br>Data Format:<br>
 Not request data required.
 
 </ol>
@@ -117,7 +117,7 @@ Search for the list of all the Hotel information:
 * HTTP method: **GET**
 * Request URL of API: `localhost:8080/hotel/`
 
-Data Format:<br>
+<br>Data Format:<br>
 Not request data required.
 
 ### Booking
@@ -130,7 +130,7 @@ Not request data required.
 * HTTP method: **POST**
 * Request URL of API: `localhost:8080/booking/`
 
-Data format:<br>
+<br>Data Format:<br>
 Data should be **Raw Data** in **JSON** format.
 ```
 # Example
@@ -150,7 +150,7 @@ Data should be **Raw Data** in **JSON** format.
 * HTTP method: **GET**
 * Request URL of API: `localhost:8080/booking/{id}`
 
-Data Format:<br>
+<br>Data Format:<br>
 Replace the `{id}` with the Booking Order ID which is going to be retrieved.
 
 <li>Search for the list of all the Booking information:</li><br>
@@ -159,7 +159,7 @@ Replace the `{id}` with the Booking Order ID which is going to be retrieved.
 * HTTP method: **GET**
 * Request URL of API: `localhost:8080/booking/`
 
-Data Format:<br>
+<br>Data Format:<br>
 Not request data required.
 
 </ol>
